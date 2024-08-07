@@ -388,12 +388,41 @@ public class GUITree extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void BtnInsertarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnInsertarActionPerformed
+    private void BtnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnNuevoActionPerformed
+        if (this.TxtNombre.getText().equals("")) {
+            JOptionPane.showMessageDialog(
+                this,
+                "El nombre es obligatorio"
+            );
+            this.TxtNombre.requestFocus();
+        } else {
+            try {
+                int anioNace = this.TxtAnioNace.getText().equals("") ? 0 : Integer.valueOf(this.TxtAnioNace.getText());
+                int anioFallece = this.TxtAnioFallece.getText().equals("") ? 0 : Integer.valueOf(this.TxtAnioFallece.getText());
+                DesObj genobj = new DesObj(
+                    this.TxtNombre.getText(),
+                    this.TxtConyuge.getText(),
+                    anioNace,
+                    anioFallece
+                );
+                arbol = new Tree(genobj);
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, e);
+            }
+            updateGui();
+        }
+    }//GEN-LAST:event_BtnNuevoActionPerformed
+
+    private void BtnExpanAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnExpanAllActionPerformed
+        expandAllNodes(this.TreeView, flag);
+    }//GEN-LAST:event_BtnExpanAllActionPerformed
+
+    private void BtnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnModificarActionPerformed
         if (this.ComboNodos.getSelectedIndex() != -1) {
             if (this.TxtNombre.getText().equals("")) {
                 JOptionPane.showMessageDialog(
-                        this,
-                        "El nombre es obligatorio"
+                    this,
+                    "El nombre es obligatorio"
                 );
                 this.TxtNombre.requestFocus();
             } else {
@@ -401,13 +430,15 @@ public class GUITree extends javax.swing.JFrame {
                     int anioNace = this.TxtAnioNace.getText().equals("") ? 0 : Integer.valueOf(this.TxtAnioNace.getText());
                     int anioFallece = this.TxtAnioFallece.getText().equals("") ? 0 : Integer.valueOf(this.TxtAnioFallece.getText());
                     DesObj genobj = new DesObj(
-                            this.TxtNombre.getText(),
-                            this.TxtConyuge.getText(),
-                            anioNace,
-                            anioFallece
+                        this.TxtNombre.getText(),
+                        this.TxtConyuge.getText(),
+                        anioNace,
+                        anioFallece
                     );
                     String[] sp = this.ComboNodos.getSelectedItem().toString().split(":");
-                    arbol.addNewNode(new DesObj(sp[0], sp.length > 1 ? sp[1] : ""), genobj);
+                    if (!arbol.modifyNode(new DesObj(sp[0], sp.length > 1 ? sp[1] : ""), genobj)) {
+                        JOptionPane.showMessageDialog(this, "El nodo no se puede modificar porque hay otro nodo con el mismo objeto");
+                    }
                 } catch (NumberFormatException e) {
                     JOptionPane.showMessageDialog(this, e);
                 }
@@ -415,11 +446,11 @@ public class GUITree extends javax.swing.JFrame {
             }
         } else {
             JOptionPane.showMessageDialog(
-                    this,
-                    "No ha seleccionado el padre del nodo a insertar"
+                this,
+                "No ha seleccionado el nodo a modificar"
             );
         }
-    }//GEN-LAST:event_BtnInsertarActionPerformed
+    }//GEN-LAST:event_BtnModificarActionPerformed
 
     private void BtnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnEliminarActionPerformed
         if (this.ComboNodos.getSelectedIndex() != -1) {
@@ -434,22 +465,18 @@ public class GUITree extends javax.swing.JFrame {
             updateGui();
         } else {
             JOptionPane.showMessageDialog(
-                    this,
-                    "No ha seleccionado el nodo a eliminar"
+                this,
+                "No ha seleccionado el nodo a eliminar"
             );
         }
     }//GEN-LAST:event_BtnEliminarActionPerformed
 
-    private void BtnExpanAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnExpanAllActionPerformed
-        expandAllNodes(this.TreeView, flag);
-    }//GEN-LAST:event_BtnExpanAllActionPerformed
-
-    private void BtnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnModificarActionPerformed
+    private void BtnInsertarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnInsertarActionPerformed
         if (this.ComboNodos.getSelectedIndex() != -1) {
             if (this.TxtNombre.getText().equals("")) {
                 JOptionPane.showMessageDialog(
-                        this,
-                        "El nombre es obligatorio"
+                    this,
+                    "El nombre es obligatorio"
                 );
                 this.TxtNombre.requestFocus();
             } else {
@@ -457,15 +484,13 @@ public class GUITree extends javax.swing.JFrame {
                     int anioNace = this.TxtAnioNace.getText().equals("") ? 0 : Integer.valueOf(this.TxtAnioNace.getText());
                     int anioFallece = this.TxtAnioFallece.getText().equals("") ? 0 : Integer.valueOf(this.TxtAnioFallece.getText());
                     DesObj genobj = new DesObj(
-                            this.TxtNombre.getText(),
-                            this.TxtConyuge.getText(),
-                            anioNace,
-                            anioFallece
+                        this.TxtNombre.getText(),
+                        this.TxtConyuge.getText(),
+                        anioNace,
+                        anioFallece
                     );
                     String[] sp = this.ComboNodos.getSelectedItem().toString().split(":");
-                    if (!arbol.modifyNode(new DesObj(sp[0], sp.length > 1 ? sp[1] : ""), genobj)) {
-                        JOptionPane.showMessageDialog(this, "El nodo no se puede modificar porque hay otro nodo con el mismo objeto");
-                    }
+                    arbol.addNewNode(new DesObj(sp[0], sp.length > 1 ? sp[1] : ""), genobj);
                 } catch (NumberFormatException e) {
                     JOptionPane.showMessageDialog(this, e);
                 }
@@ -473,36 +498,52 @@ public class GUITree extends javax.swing.JFrame {
             }
         } else {
             JOptionPane.showMessageDialog(
-                    this,
-                    "No ha seleccionado el nodo a modificar"
+                this,
+                "No ha seleccionado el padre del nodo a insertar"
             );
         }
-    }//GEN-LAST:event_BtnModificarActionPerformed
+    }//GEN-LAST:event_BtnInsertarActionPerformed
 
-    private void BtnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnNuevoActionPerformed
-        if (this.TxtNombre.getText().equals("")) {
-            JOptionPane.showMessageDialog(
+    private void BtnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnGuardarActionPerformed
+        int fd = fileDialog.showDialog(this, "Save");
+        if (fd == JFileChooser.APPROVE_OPTION) {
+            File path = fileDialog.getSelectedFile();
+            if (path.exists()) {
+                int reply = JOptionPane.showConfirmDialog(
                     this,
-                    "El nombre es obligatorio"
-            );
-            this.TxtNombre.requestFocus();
-        } else {
-            try {
-                int anioNace = this.TxtAnioNace.getText().equals("") ? 0 : Integer.valueOf(this.TxtAnioNace.getText());
-                int anioFallece = this.TxtAnioFallece.getText().equals("") ? 0 : Integer.valueOf(this.TxtAnioFallece.getText());
-                DesObj genobj = new DesObj(
-                        this.TxtNombre.getText(),
-                        this.TxtConyuge.getText(),
-                        anioNace,
-                        anioFallece
+                    "¿Desea sobreescribir el archivo seleccionado?",
+                    "GenTree",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.WARNING_MESSAGE
                 );
-                arbol = new Tree(genobj);
-            } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(this, e);
+                if (reply == JOptionPane.YES_OPTION) {
+                    if (path.delete()) {
+                        try {
+                            saveFile(path.toString());
+                            this.setTitle("GenTree - " + path.toString());
+                        } catch (IOException ex) {
+                            Logger.getLogger(GUITree.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    } else {
+                        JOptionPane.showConfirmDialog(
+                            this,
+                            "Un error ha ocurrido",
+                            "GenTree",
+                            JOptionPane.ERROR,
+                            JOptionPane.ERROR_MESSAGE
+                        );
+                    }
+                }
+            } else {
+                try {
+                    saveFile(path.toString());
+                    this.setTitle("GenTree - " + path.toString());
+                } catch (IOException ex) {
+                    Logger.getLogger(GUITree.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
-            updateGui();
         }
-    }//GEN-LAST:event_BtnNuevoActionPerformed
+    }//GEN-LAST:event_BtnGuardarActionPerformed
 
     private void BtnAbrirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnAbrirActionPerformed
         fileDialog.setDialogType(javax.swing.JFileChooser.OPEN_DIALOG);
@@ -519,47 +560,6 @@ public class GUITree extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_BtnAbrirActionPerformed
-
-    private void BtnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnGuardarActionPerformed
-        int fd = fileDialog.showDialog(this, "Save");
-        if (fd == JFileChooser.APPROVE_OPTION) {
-            File path = fileDialog.getSelectedFile();
-            if (path.exists()) {
-                int reply = JOptionPane.showConfirmDialog(
-                        this,
-                        "¿Desea sobreescribir el archivo seleccionado?",
-                        "GenTree",
-                        JOptionPane.YES_NO_OPTION,
-                        JOptionPane.WARNING_MESSAGE
-                );
-                if (reply == JOptionPane.YES_OPTION) {
-                    if (path.delete()) {
-                        try {
-                            saveFile(path.toString());
-                            this.setTitle("GenTree - " + path.toString());
-                        } catch (IOException ex) {
-                            Logger.getLogger(GUITree.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                    } else {
-                        JOptionPane.showConfirmDialog(
-                                this,
-                                "Un error ha ocurrido",
-                                "GenTree",
-                                JOptionPane.ERROR,
-                                JOptionPane.ERROR_MESSAGE
-                        );
-                    }
-                }
-            } else {
-                try {
-                    saveFile(path.toString());
-                    this.setTitle("GenTree - " + path.toString());
-                } catch (IOException ex) {
-                    Logger.getLogger(GUITree.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        }
-    }//GEN-LAST:event_BtnGuardarActionPerformed
 
     private void saveFile(String path) throws IOException {
         try ( FileWriter writer = new FileWriter(path, true)) {

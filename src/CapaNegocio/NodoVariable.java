@@ -12,7 +12,7 @@ public class NodoVariable {
     private short valorIntero;
     private BigDecimal valorReal;
     private String vectorEntero;
-    private String vectorStrung;
+    private String vectorString;
     private short activoId;
     private short localizacionId;
     private short activiId;
@@ -33,7 +33,7 @@ public class NodoVariable {
         this.valorIntero = valorIntero;
         this.valorReal = valorReal;
         this.vectorEntero = vectorEntero;
-        this.vectorStrung = vectorStrung;
+        this.vectorString = vectorStrung;
         this.activoId = activoId;
         this.localizacionId = localizacionId;
         this.activiId = activiId;
@@ -45,8 +45,6 @@ public class NodoVariable {
         this.activoIdActivos = activoIdActivos;
         this.expresionIdExpresiones = expresionIdExpresiones;
     }
-
-    // Getters and Setters
 
     public short getVariableId() {
         return variableId;
@@ -112,12 +110,12 @@ public class NodoVariable {
         this.vectorEntero = vectorEntero;
     }
 
-    public String getVectorStrung() {
-        return vectorStrung;
+    public String getVectorString() {
+        return vectorString;
     }
 
-    public void setVectorStrung(String vectorStrung) {
-        this.vectorStrung = vectorStrung;
+    public void setVectorString(String vectorStrung) {
+        this.vectorString = vectorStrung;
     }
 
     public short getActivoId() {
@@ -211,7 +209,7 @@ public class NodoVariable {
                 ", valorIntero=" + valorIntero +
                 ", valorReal=" + valorReal +
                 ", vectorEntero='" + vectorEntero + '\'' +
-                ", vectorStrung='" + vectorStrung + '\'' +
+                ", vectorStrung='" + vectorString + '\'' +
                 ", activoId=" + activoId +
                 ", localizacionId=" + localizacionId +
                 ", activiId=" + activiId +

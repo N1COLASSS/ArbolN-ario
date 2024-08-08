@@ -4,26 +4,47 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+/**
+ * Clase que gestiona la conexión a la base de datos SQL Server Express utilizando
+ * seguridad integrada de Windows.
+ */
 public class ConexionSQL {
 
-    private static final String URL = "jdbc:sqlserver://localhost\\SQLEXPRESS;databasName=Arbol";
-    private static final String INTEGRATED_SECURITY = ";integratedSecurity=true";
-    private static final String JDBC_DRIVER = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
-//    private static final String AUTH_LIB_PATH = "C:\\Users\\estudios1\\Downloads\\sqljdbc_12.8\\esn\\auth\\x64\\sqljdbc_auth.dll";
-    private static final String AUTH_LIB_PATH = "C:\\Users\\brend\\Documents\\Proyectos\\KIM21\\Workspace\\ArbolN-ario\\mssql-jdbc_auth-12.8.0.x64.dll";
-    public static Connection getConnection() throws SQLException {
-        try {
-            // Establecer la ruta a sqljdbc_auth.dll en la propiedad del sistema java.library.path
-            System.setProperty("java.library.path", AUTH_LIB_PATH);
-            
-            // Cargar el controlador JDBC
-            Class.forName(JDBC_DRIVER);
-            
-            // Obtener la conexión
-            return DriverManager.getConnection(URL + INTEGRATED_SECURITY);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            throw new SQLException("Error al cargar el controlador JDBC.", e);
+    // Cadena de conexión a la base de datos utilizando seguridad integrada de Windows
+    private static final String CONNECTION_STRING = "jdbc:sqlserver://DESK-ESTUDIOS1\\SQLEXPRESS:1433;databaseName=Arbol;integratedSecurity=true;encrypt=true;trustServerCertificate=true;";
+
+    /**
+     * Método principal para probar la conexión a la base de datos.
+     * 
+     * @param args argumentos de la línea de comandoa
+     */
+    public static void main(String[] args) {
+        // Probar la conexión a la base de datos
+        probarConexion();
+    }
+
+    /**
+     * Prueba la conexión a la base de datos e imprime el resultado.
+     */
+    private static void probarConexion() {
+        try (Connection connection = getConnection()) {
+            if (connection != null) {
+                System.out.println("Conexión exitosa.");
+            } else {
+                System.out.println("Fallo en la conexión.");
+            }
+        } catch (SQLException e) {
+            System.err.println("Error en la conexión: " + e.getMessage());
         }
+    }
+
+    /**
+     * Obtiene una conexión a la base de datos.
+     * 
+     * @return una conexión a la base de datos
+     * @throws SQLException si ocurre un error al intentar conectar
+     */
+    public static Connection getConnection() throws SQLException {
+        return DriverManager.getConnection(CONNECTION_STRING);
     }
 }

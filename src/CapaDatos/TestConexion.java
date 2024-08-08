@@ -12,7 +12,7 @@ public class TestConexion {
                 System.out.println("Conexión establecida exitosamente.");
                 
                 // Prueba simple para ejecutar una consulta
-                String query = "SELECT dbo.activos";
+                String query = "SELECT * FROM dbo.activos";
                 try (Statement stmt = connection.createStatement()) {
                     boolean result = stmt.execute(query);
                     System.out.println("Consulta ejecutada exitosamente, resultado: " + result);

@@ -1,216 +1,79 @@
 package CapaNegocio;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.Stack;
 import javax.swing.tree.DefaultMutableTreeNode;
+import java.util.Stack;
 
 public class Tree {
 
-    private Node root;
+    private NodoHijo root;
 
-    public Tree(Object rootValue) {
-        root = new Node(rootValue);
-    }
-
-    public Tree(Node root) {
+    public Tree(NodoHijo root) {
         this.root = root;
     }
 
-    public Tree(String path) throws IOException {
-        FileReader reader = new FileReader(path);
-        BufferedReader br = new BufferedReader(reader);
-
-        String st = "";
-        System.out.println("Leyendo archivo: " + path + "\n");
-        String a;
-        while ((a = br.readLine()) != null) {
-            System.out.println(a);
-            st += a + "\n";
-        }
-        String[] lines = st.split("\n");
-        for (int i = 0; i < lines.length; i++) {
-            if (i == 0) {
-                String[] s = lines[i].split(":");
-                DesObj o = new DesObj(
-                        s[0],
-                        s[1],
-                        Integer.valueOf(s[2]),
-                        Integer.valueOf(s[3])
-                );
-                this.root = new Node(o);
-            } else {
-                String[] parentChild = lines[i].split(",");
-                String[] parent = parentChild[0].split(":");
-                String[] child = parentChild[1].split(":");
-
-                DesObj parentObj = new DesObj(parent[0], parent.length > 1 ? parent[1] : "");
-                DesObj childObj = new DesObj(child[0], child[1], Integer.valueOf(child[2]), Integer.valueOf(child[3]));
-
-                //long start = System.nanoTime();
-                addNewNode(parentObj, childObj);
-                //long end = System.nanoTime();
-                //System.out.println(end - start);
-            }
-        }
-    }
-
-    public Node searchNode(Object obj) {
+    public NodoHijo searchNode(Object obj) {
         return searchNode(root, obj);
     }
 
-    public Node searchParent(Node root, Object obj, Node last) {
-        if (!root.getRoot().equals(obj)) {
-            for (Node n : root.getChildren()) {
-                Tree newTree = new Tree(n);
-                if (newTree.searchNode(obj) != null) {
-                    root = searchParent(n, obj, root);
-                    break;
-                }
-            }
-            return root;
+    private NodoHijo searchNode(NodoHijo rootNode, Object obj) {
+        if (rootNode.getNodoArbol().getNombre().equals(obj)) {
+            return rootNode;
         }
-        return last;
-    }
-
-    public Node searchNode(Node rootNode, Object obj) {
-        Node searchedNode = null;
-        boolean found = false;
-        if (rootNode != null) {
-            if (rootNode.getRoot().equals(obj)) {
-                searchedNode = rootNode;
-            } else {
-                for (int i = 0; i < rootNode.getChildren().size() && !found; i++) {
-                    searchedNode = searchNode(
-                            rootNode.getChildren().get(i),
-                            obj
-                    );
-                    if (searchedNode != null) {
-                        found = true;
-                    }
-                }
+        for (NodoHijo hijo : rootNode.getNodoHijos()) {
+            NodoHijo found = searchNode(hijo, obj);
+            if (found != null) {
+                return found;
             }
         }
-        return searchedNode;
+        return null;
     }
 
     public void removeNode(Object parentNodeValue) {
-        Node parentNode = searchParent(root, parentNodeValue, null);
-        int index = -1;
+        NodoHijo parentNode = searchNode(root, parentNodeValue);
         if (parentNode != null) {
-            System.out.println("El padre de " + parentNodeValue + " es " + parentNode.getRoot());
-            for (int i = 0; i < parentNode.getChildren().size(); i++) {
-                if (parentNode.getChildren().get(i).getRoot().equals(parentNodeValue)) {
-                    index = i;
-                    break;
-                }
-            }
-            if (index >= 0) {
-                parentNode.getChildren().remove(index);
-            }
-        } else {
-            this.root = null;
+            parentNode.getNodoHijos().removeIf(h -> h.getNodoArbol().getNombre().equals(parentNodeValue));
+        } else if (root.getNodoArbol().getNombre().equals(parentNodeValue)) {
+            root = null;
         }
     }
 
-    public Node addNewNode(Object parentNodeValue, Object newNodeValue) {
-        Node parentNode = searchNode(parentNodeValue);
-        Node newNode = searchNode(newNodeValue);
-
-        if (parentNode != null && newNode == null) {
-            newNode = parentNode.add(newNodeValue);
-            newNode.setParent(parentNode.getRoot());
+    public NodoHijo addNewNode(NodoHijo parentNode, NodoHijo newNode) {
+        if (parentNode != null) {
+            parentNode.add(newNode);
         } else {
-            newNode = null;
-            if (parentNode == null) {
-                System.out.println(
-                        "El nodo no se puede añadir porque "
-                        + "el nodo padre \""
-                        + parentNodeValue
-                        + "\" no existe"
-                );
-            } else {
-                System.out.println(
-                        "El nodo no se puede insertar "
-                        + "porque hay otro nodo con el mismo objeto"
-                );
-            }
+            System.out.println("No se puede agregar porque el nodo padre no existe.");
         }
         return newNode;
     }
 
-    public boolean modifyNode(Object parentNodeValue, Object newNodeValue) {
-        Node parentNode = searchNode(parentNodeValue);
-        boolean r = false;
-        if (parentNode != null && !parentNode.getRoot().equals(newNodeValue) && this.searchNode(newNodeValue) == null) {
-            parentNode.setRoot(newNodeValue);
-            r = true;
-        } else {
-            if (parentNode != null) {
-                System.out.println(
-                        "El nodo no se puede modificar "
-                        + "porque hay otro nodo con el mismo objeto"
-                );
-            }
+    public boolean modifyNode(NodoHijo node, NodoArbol newNodoArbol) {
+        if (node != null) {
+            node.setNodoArbol(newNodoArbol);
+            return true;
         }
-        return r;
+        return false;
     }
 
     @Override
     public String toString() {
-        return toString(0, root);
+        return toString(root, 0);
     }
 
-    private String toString(int level, Node root) {
-        String s = "";
+    private String toString(NodoHijo root, int level) {
+        StringBuilder sb = new StringBuilder();
         if (root != null) {
-            if (level > 0) {
-                for (int i = 0; i < level; i++) {
-                    s += "-";
-                }
-                s += "";
-            }
-            s += root.getRoot() + "\n";
-            if (root.getChildren() != null) {
-                for (int j = 0; j < root.getChildren().size(); j++) {
-                    s += toString(level + 1, root.getChildren().get(j));
-                }
+            sb.append(" ".repeat(level * 2)).append(root.getNodoArbol().getNombre()).append("\n");
+            for (NodoHijo hijo : root.getNodoHijos()) {
+                sb.append(toString(hijo, level + 1));
             }
         }
-        return s;
-    }
-
-    public String toStringText() {
-        return toStringText(0, root);
-    }
-
-    private String toStringText(int level, Node root) {
-        String s = "";
-        if (root != null) {
-            if (level > 0) {
-                DesObj aux = (DesObj) root.getParent();
-                s += aux.toString() + ",";
-            }
-            DesObj aux = (DesObj) root.getRoot();
-            s += aux.toStringText() + "\n";
-            if (root.getChildren() != null) {
-                for (int j = 0; j < root.getChildren().size(); j++) {
-                    s += toStringText(level + 1, root.getChildren().get(j));
-                }
-            }
-        }
-        return s;
+        return sb.toString();
     }
 
     public String[] nodes2StringArray() {
-        String[] lines = toString().split("\n");
-        for (int i = 0; i < lines.length; i++) {
-            lines[i] = lines[i].replace("-", "");
-        }
-        return lines;
+        return toString().split("\n");
     }
-
+    
     public static DefaultMutableTreeNode text2DTree(String text) {
         Stack<DefaultMutableTreeNode> pila = new Stack<>();
         Stack<DefaultMutableTreeNode> aux = new Stack<>();
@@ -242,8 +105,8 @@ public class Tree {
                     pila.pop();
                     aux.pop();
 
-                    S1 = (DefaultMutableTreeNode) pila.peek();
-                    auxS1 = (DefaultMutableTreeNode) aux.peek();
+                    S1 = pila.peek();
+                    auxS1 = aux.peek();
 
                     s1 = countDepth(S1.toString(), '-');
                 }
@@ -266,4 +129,5 @@ public class Tree {
         }
         return count;
     }
+
 }

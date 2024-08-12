@@ -12,10 +12,10 @@ public class ConexionSQL {
 
     // Cadena de conexión a la base de datos utilizando seguridad integrada de Windows
     //TRABAJO NICOLAS
-//    private static final String CONNECTION_STRING = "jdbc:sqlserver://DESK-ESTUDIOS1\\SQLEXPRESS:1433;databaseName=Arbol;integratedSecurity=true;encrypt=true;trustServerCertificate=true;";
+    private static final String CONNECTION_STRING = "jdbc:sqlserver://DESK-ESTUDIOS1\\SQLEXPRESS:1433;databaseName=Arbol;integratedSecurity=true;encrypt=true;trustServerCertificate=true;";
     
     //CASA NICOLAS
-    private static final String CONNECTION_STRING = "jdbc:sqlserver://DESKTOP-JD3VUB1\\SQLEXPRESS:1433;databaseName=ArbolNario;integratedSecurity=true;encrypt=true;trustServerCertificate=true;";
+//    private static final String CONNECTION_STRING = "jdbc:sqlserver://DESKTOP-JD3VUB1\\SQLEXPRESS:1433;databaseName=ArbolNario;integratedSecurity=true;encrypt=true;trustServerCertificate=true;";
 
     /**
      * Método principal para probar la conexión a la base de datos.

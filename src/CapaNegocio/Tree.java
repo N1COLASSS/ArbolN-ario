@@ -1,133 +1,61 @@
 package CapaNegocio;
 
-import javax.swing.tree.DefaultMutableTreeNode;
-import java.util.Stack;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class Tree {
+    
+    private Map<Short, NodoArbol> nodos = new HashMap<>();
+    private Map<Short, List<NodoHijo>> enlaces = new HashMap<>();
 
-    private NodoHijo root;
-
-    public Tree(NodoHijo root) {
-        this.root = root;
+    // Método para obtener los nodos
+    public Map<Short, NodoArbol> getNodos() {
+        return nodos;
     }
 
-    public NodoHijo searchNode(Object obj) {
-        return searchNode(root, obj);
+    // Método para agregar un nodo al árbol
+    public void agregarNodo(NodoArbol nodo) {
+        nodos.put(nodo.getNodoArbolId(), nodo);
     }
 
-    private NodoHijo searchNode(NodoHijo rootNode, Object obj) {
-        if (rootNode.getNodoArbol().getNombre().equals(obj)) {
-            return rootNode;
+    // Método para agregar un enlace (relación padre-hijo)
+    public void agregarEnlace(short nodoPadreId, short nodoHijoId, char opcionTF, short posicionRango) {
+        NodoHijo enlace = new NodoHijo(nodoPadreId, nodoHijoId, opcionTF, posicionRango);
+        enlaces.computeIfAbsent(nodoPadreId, k -> new ArrayList<>()).add(enlace);
+        
+        // También agregar el nodo hijo a la lista de hijos del nodo padre
+        NodoArbol nodoPadre = nodos.get(nodoPadreId);
+        NodoArbol nodoHijo = nodos.get(nodoHijoId);
+        if (nodoPadre != null && nodoHijo != null) {
+            nodoPadre.agregarHijo(nodoHijo);
         }
-        for (NodoHijo hijo : rootNode.getNodoHijos()) {
-            NodoHijo found = searchNode(hijo, obj);
-            if (found != null) {
-                return found;
+    }
+
+    // Método para mostrar la estructura del árbol
+    public void mostrarArbol() {
+        for (Map.Entry<Short, NodoArbol> entry : nodos.entrySet()) {
+            NodoArbol nodo = entry.getValue();
+            System.out.println("Nodo ID: " + nodo.getNodoArbolId() + ", Tipo: " + nodo.getTipoNodo());
+            List<NodoHijo> hijos = enlaces.get(nodo.getNodoArbolId());
+            if (hijos != null) {
+                for (NodoHijo hijo : hijos) {
+                    System.out.println("  -> Hijo ID: " + hijo.getNodoHijoId() + ", OpciónTF: " + hijo.getOpcionTF());
+                }
             }
         }
-        return null;
-    }
-
-    public void removeNode(Object parentNodeValue) {
-        NodoHijo parentNode = searchNode(root, parentNodeValue);
-        if (parentNode != null) {
-            parentNode.getNodoHijos().removeIf(h -> h.getNodoArbol().getNombre().equals(parentNodeValue));
-        } else if (root.getNodoArbol().getNombre().equals(parentNodeValue)) {
-            root = null;
-        }
-    }
-
-    public NodoHijo addNewNode(NodoHijo parentNode, NodoHijo newNode) {
-        if (parentNode != null) {
-            parentNode.add(newNode);
-        } else {
-            System.out.println("No se puede agregar porque el nodo padre no existe.");
-        }
-        return newNode;
-    }
-
-    public boolean modifyNode(NodoHijo node, NodoArbol newNodoArbol) {
-        if (node != null) {
-            node.setNodoArbol(newNodoArbol);
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public String toString() {
-        return toString(root, 0);
-    }
-
-    private String toString(NodoHijo root, int level) {
-        StringBuilder sb = new StringBuilder();
-        if (root != null) {
-            sb.append(" ".repeat(level * 2)).append(root.getNodoArbol().getNombre()).append("\n");
-            for (NodoHijo hijo : root.getNodoHijos()) {
-                sb.append(toString(hijo, level + 1));
-            }
-        }
-        return sb.toString();
-    }
-
-    public String[] nodes2StringArray() {
-        return toString().split("\n");
     }
     
-    public static DefaultMutableTreeNode text2DTree(String text) {
-        Stack<DefaultMutableTreeNode> pila = new Stack<>();
-        Stack<DefaultMutableTreeNode> aux = new Stack<>();
-
-        String[] lines = text.split("\n");
-        DefaultMutableTreeNode S1, S2;
-        DefaultMutableTreeNode auxS1, auxS2;
-
-        pila.push(new DefaultMutableTreeNode(lines[0]));
-        aux.push(new DefaultMutableTreeNode(lines[0]));
-        for (int i = 1; i < lines.length; i++) {
-            S1 = pila.peek();
-            auxS1 = aux.peek();
-
-            S2 = new DefaultMutableTreeNode(lines[i]);
-            auxS2 = new DefaultMutableTreeNode(lines[i].replace("-", " "));
-
-            int s1 = countDepth(S1.toString(), '-');
-            int s2 = countDepth(S2.toString(), '-');
-
-            if (s1 < s2) {
-                S1.add(S2);
-                auxS1.add(auxS2);
-
-                pila.push(S2);
-                aux.push(auxS2);
-            } else {
-                while (s1 >= s2 && pila.size() >= 2) {
-                    pila.pop();
-                    aux.pop();
-
-                    S1 = pila.peek();
-                    auxS1 = aux.peek();
-
-                    s1 = countDepth(S1.toString(), '-');
-                }
-                S1.add(S2);
-                auxS1.add(auxS2);
-
-                pila.push(S2);
-                aux.push(auxS2);
-            }
-        }
-        return aux.get(0);
+    public NodoArbol buscarNodo(short nodoId) {
+        return nodos.get(nodoId);
     }
 
-    private static int countDepth(String s, char c) {
-        int count = 0;
-        for (int i = 0; i < s.length(); i++) {
-            if (s.charAt(i) == c) {
-                count++;
-            }
+    public void eliminarNodo(NodoArbol nodo) {
+        nodos.remove(nodo.getNodoArbolId());
+        enlaces.remove(nodo.getNodoArbolId());
+        for (List<NodoHijo> hijos : enlaces.values()) {
+            hijos.removeIf(hijo -> hijo.getNodoHijoId() == nodo.getNodoArbolId());
         }
-        return count;
     }
-
 }

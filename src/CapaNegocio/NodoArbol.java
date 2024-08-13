@@ -1,35 +1,32 @@
 package CapaNegocio;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class NodoArbol {
-    
-    private short nodoId;
-    private String nombre;
+    private short nodoArbolId;
     private String tipoNodo;
-    private String tipoExpresion;
-    private String expresion;
+    private List<NodoArbol> hijos;
 
-    public NodoArbol(short nodoId, String nombre, String tipoNodo, String tipoExpresion, String expresion) {
-        this.nodoId = nodoId;
-        this.nombre = nombre;
+    // Constructor con inicialización de la lista de hijos
+    public NodoArbol(short nodoArbolId, String tipoNodo) {
+        this.nodoArbolId = nodoArbolId;
         this.tipoNodo = tipoNodo;
-        this.tipoExpresion = tipoExpresion;
-        this.expresion = expresion;
-    }    
-
-    public short getNodoId() {
-        return nodoId;
+        this.hijos = new ArrayList<>(); // Inicializa la lista de hijos
     }
 
-    public void setNodoId(short nodoId) {
-        this.nodoId = nodoId;
+    public NodoArbol(short nodoArbolId, String tipoNodo, List<NodoArbol> hijos) {
+        this.nodoArbolId = nodoArbolId;
+        this.tipoNodo = tipoNodo;
+        this.hijos = hijos != null ? hijos : new ArrayList<>(); // Inicializa si es null
     }
 
-    public String getNombre() {
-        return nombre;
+    public short getNodoArbolId() {
+        return nodoArbolId;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setNodoArbolId(short nodoArbolId) {
+        this.nodoArbolId = nodoArbolId;
     }
 
     public String getTipoNodo() {
@@ -40,30 +37,15 @@ public class NodoArbol {
         this.tipoNodo = tipoNodo;
     }
 
-    public String getTipoExpresion() {
-        return tipoExpresion;
+    public List<NodoArbol> getHijos() {
+        return hijos;
     }
 
-    public void setTipoExpresion(String tipoExpresion) {
-        this.tipoExpresion = tipoExpresion;
-    }
-
-    public String getExpresion() {
-        return expresion;
-    }
-
-    public void setExpresion(String expresion) {
-        this.expresion = expresion;
+    public void setHijos(List<NodoArbol> hijos) {
+        this.hijos = hijos;
     }
     
-    @Override
-    public String toString() {
-        return "NodoArbol{" +
-                "nodoId=" + nodoId +
-                ", nombre='" + nombre + '\'' +
-                ", tipoNodo='" + tipoNodo + '\'' +
-                ", tipoExpresion='" + tipoExpresion + '\'' +
-                ", expresion='" + expresion + '\'' +
-                '}';
+    public void agregarHijo(NodoArbol nodoHijo) {
+        hijos.add(nodoHijo);
     }
 }

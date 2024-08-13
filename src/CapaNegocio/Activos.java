@@ -1,18 +1,27 @@
 package CapaNegocio;
 
-public class Activos extends NodoArbol {
-    
+public class Activos {
+    private short activoId;
+    private String nombre;
     private String tipo;
     private String estado;
-    private boolean monitor;
+    private String monitor;
     private String docEstado;
 
-    public Activos(String tipo, String estado, boolean monitor, String docEstado, short nodoId, String nombre, String tipoNodo, String tipoExpresion, String expresion) {
-        super(nodoId, nombre, "Activos", tipoExpresion, expresion);
-        this.tipo = tipo;
-        this.estado = estado;
-        this.monitor = monitor;
-        this.docEstado = docEstado;
+    public short getActivoId() {
+        return activoId;
+    }
+
+    public void setActivoId(short activoId) {
+        this.activoId = activoId;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     public String getTipo() {
@@ -31,11 +40,11 @@ public class Activos extends NodoArbol {
         this.estado = estado;
     }
 
-    public boolean isMonitor() {
+    public String getMonitor() {
         return monitor;
     }
 
-    public void setMonitor(boolean monitor) {
+    public void setMonitor(String monitor) {
         this.monitor = monitor;
     }
 
@@ -46,9 +55,6 @@ public class Activos extends NodoArbol {
     public void setDocEstado(String docEstado) {
         this.docEstado = docEstado;
     }
+
     
-    @Override
-    public String toString() {
-        return super.toString() + ", tipo=" + tipo + ", estado=" + estado + ", monitor=" + monitor + ", docEstado=" + docEstado;
-    }
 }

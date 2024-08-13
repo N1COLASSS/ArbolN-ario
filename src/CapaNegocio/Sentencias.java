@@ -2,17 +2,27 @@ package CapaNegocio;
 
 import java.util.Date;
 
-public class Sentencias extends NodoArbol {
-    
+public class Sentencias {
+    private short sentenciaId;
+    private String nombre;
     private String query;
     private String estado;
     private Date fechaAprobacion;
 
-    public Sentencias(String query, String estado, Date fechaAprobacion, short nodoId, String nombre, String tipoExpresion, String expresion) {
-        super(nodoId, nombre, "Sentencias", tipoExpresion, expresion);
-        this.query = query;
-        this.estado = estado;
-        this.fechaAprobacion = fechaAprobacion;
+    public short getSentenciaId() {
+        return sentenciaId;
+    }
+
+    public void setSentenciaId(short sentenciaId) {
+        this.sentenciaId = sentenciaId;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     public String getQuery() {
@@ -39,8 +49,5 @@ public class Sentencias extends NodoArbol {
         this.fechaAprobacion = fechaAprobacion;
     }
     
-    @Override
-    public String toString() {
-        return super.toString() + ", query=" + query + ", estado=" + estado + ", fechaAprobacion=" + fechaAprobacion;
-    }
+    
 }

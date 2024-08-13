@@ -1,26 +1,31 @@
 package CapaNegocio;
 
-import java.math.BigDecimal;
 
-public class VariablesContexto extends NodoArbol{
-    
+public class VariablesContexto {
+    private short variableId;
+    private String nombre;
     private String tipo;
     private short largo;
     private short valorEntero;
-    private BigDecimal valorReal;
+    private double valorReal;
     private String vectorEntero;
     private String vectorString;
     private String valorString;
 
-    public VariablesContexto(String tipo, short largo, short valorEntero, BigDecimal valorReal, String vectorEntero, String vectorString, String valorString, short nodoId, String nombre, String tipoNodo, String tipoExpresion, String expresion) {
-        super(nodoId, nombre, tipoNodo, tipoExpresion, expresion);
-        this.tipo = tipo;
-        this.largo = largo;
-        this.valorEntero = valorEntero;
-        this.valorReal = valorReal;
-        this.vectorEntero = vectorEntero;
-        this.vectorString = vectorString;
-        this.valorString = valorString;
+    public short getVariableId() {
+        return variableId;
+    }
+
+    public void setVariableId(short variableId) {
+        this.variableId = variableId;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     public String getTipo() {
@@ -47,11 +52,11 @@ public class VariablesContexto extends NodoArbol{
         this.valorEntero = valorEntero;
     }
 
-    public BigDecimal getValorReal() {
+    public double getValorReal() {
         return valorReal;
     }
 
-    public void setValorReal(BigDecimal valorReal) {
+    public void setValorReal(double valorReal) {
         this.valorReal = valorReal;
     }
 
@@ -78,9 +83,6 @@ public class VariablesContexto extends NodoArbol{
     public void setValorString(String valorString) {
         this.valorString = valorString;
     }
+
     
-    @Override
-    public String toString() {
-        return super.toString() + ", tipo=" + tipo + ", largo=" + largo + ", valorEntero=" + valorEntero + ", valorReal=" + valorReal;
-    }
 }

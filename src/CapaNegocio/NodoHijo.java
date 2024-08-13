@@ -1,21 +1,17 @@
 package CapaNegocio;
 
-import java.util.ArrayList;
-
 public class NodoHijo {
     
     private short nodoPadreId;
-    private ArrayList<NodoHijo> nodoHijos;
+    private short nodoHijoId;
     private char opcionTF;
     private short posicionRango;
-    private NodoArbol nodoArbol;
 
-    public NodoHijo(short nodoPadreId, char opcionTF, short posicionRango, NodoArbol nodoArbol) {
+    public NodoHijo(short nodoPadreId, short nodoHijoId, char opcionTF, short posicionRango) {
         this.nodoPadreId = nodoPadreId;
-        this.nodoHijos = new ArrayList<>();
+        this.nodoHijoId = nodoHijoId;
         this.opcionTF = opcionTF;
         this.posicionRango = posicionRango;
-        this.nodoArbol = nodoArbol;
     }
 
     public short getNodoPadreId() {
@@ -26,12 +22,12 @@ public class NodoHijo {
         this.nodoPadreId = nodoPadreId;
     }
 
-    public ArrayList<NodoHijo> getNodoHijos() {
-        return nodoHijos;
+    public short getNodoHijoId() {
+        return nodoHijoId;
     }
 
-    public void setNodoHijos(ArrayList<NodoHijo> nodoHijos) {
-        this.nodoHijos = nodoHijos;
+    public void setNodoHijoId(short nodoHijoId) {
+        this.nodoHijoId = nodoHijoId;
     }
 
     public char getOpcionTF() {
@@ -48,24 +44,5 @@ public class NodoHijo {
 
     public void setPosicionRango(short posicionRango) {
         this.posicionRango = posicionRango;
-    }
-
-    public NodoArbol getNodoArbol() {
-        return nodoArbol;
-    }
-
-    public void setNodoArbol(NodoArbol nodoArbol) {
-        this.nodoArbol = nodoArbol;
-    }
-
-    // Método para añadir un nuevo NodoHijo a la lista de hijos
-    public NodoHijo add(NodoHijo nodoHijo) {
-        this.nodoHijos.add(nodoHijo);
-        return nodoHijo;
-    }
-    
-    @Override
-    public String toString() {
-        return nodoArbol.toString();
     }
 }

@@ -1,16 +1,19 @@
 package CapaNegocio;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class NodoArbol {
     private short nodoArbolId;
     private String tipoNodo;
-    private short tipoExpersion;
-    private short expresion;
+    private Short tipoExpresion;
+    private List<NodoHijo> hijos; 
 
-    public NodoArbol(short nodoArbolId, String tipoNodo, short tipoExpersion, short expresion) {
+    public NodoArbol(short nodoArbolId, String tipoNodo, Short tipoExpresion) {
         this.nodoArbolId = nodoArbolId;
         this.tipoNodo = tipoNodo;
-        this.tipoExpersion = tipoExpersion;
-        this.expresion = expresion;
+        this.tipoExpresion = tipoExpresion;
+        this.hijos = new ArrayList<>();
     }
 
     public short getNodoArbolId() {
@@ -29,21 +32,19 @@ public class NodoArbol {
         this.tipoNodo = tipoNodo;
     }
 
-    public short getTipoExpersion() {
-        return tipoExpersion;
+    public Short getTipoExpresion() {
+        return tipoExpresion;
     }
 
-    public void setTipoExpersion(short tipoExpersion) {
-        this.tipoExpersion = tipoExpersion;
+    public void setTipoExpresion(Short tipoExpresion) {
+        this.tipoExpresion = tipoExpresion;
     }
 
-    public short getExpresion() {
-        return expresion;
+    public List<NodoHijo> getHijos() {
+        return hijos;
     }
 
-    public void setExpresion(short expresion) {
-        this.expresion = expresion;
+    public void setHijos(List<NodoHijo> hijos) {
+        this.hijos = hijos;
     }
-    
-    
 }

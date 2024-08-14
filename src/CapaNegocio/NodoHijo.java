@@ -1,34 +1,34 @@
 package CapaNegocio;
 
 public class NodoHijo {
-    private short nodoPadre;
-    private short nodoHijo;
+    private short nodoPadreId;
+    private short nodoHijoId;
     private char opcionTF;
     private short posicionRango;
-    private short nodoArbolId;
+    private NodoArbol nodoArbol;
 
-    public NodoHijo(short nodoPadre, short nodoHijo, char opcionTF, short posicionRango, short nodoArbolId) {
-        this.nodoPadre = nodoPadre;
-        this.nodoHijo = nodoHijo;
+    public NodoHijo(short nodoPadreId, short nodoHijoId, char opcionTF, short posicionRango, NodoArbol nodoArbol) {
+        this.nodoPadreId = nodoPadreId;
+        this.nodoHijoId = nodoHijoId;
         this.opcionTF = opcionTF;
         this.posicionRango = posicionRango;
-        this.nodoArbolId = nodoArbolId;
+        this.nodoArbol = nodoArbol;
     }
 
-    public short getNodoPadre() {
-        return nodoPadre;
+    public short getNodoPadreId() {
+        return nodoPadreId;
     }
 
-    public void setNodoPadre(short nodoPadre) {
-        this.nodoPadre = nodoPadre;
+    public void setNodoPadreId(short nodoPadreId) {
+        this.nodoPadreId = nodoPadreId;
     }
 
-    public short getNodoHijo() {
-        return nodoHijo;
+    public short getNodoHijoId() {
+        return nodoHijoId;
     }
 
-    public void setNodoHijo(short nodoHijo) {
-        this.nodoHijo = nodoHijo;
+    public void setNodoHijoId(short nodoHijoId) {
+        this.nodoHijoId = nodoHijoId;
     }
 
     public char getOpcionTF() {
@@ -47,13 +47,11 @@ public class NodoHijo {
         this.posicionRango = posicionRango;
     }
 
-    public short getNodoArbolId() {
-        return nodoArbolId;
+    public NodoArbol getNodoArbol() {
+        return nodoArbol;
     }
 
-    public void setNodoArbolId(short nodoArbolId) {
-        this.nodoArbolId = nodoArbolId;
-    }
-    
-    
+    public void setNodoArbol(NodoArbol nodoArbol) {
+        this.nodoArbol = nodoArbol;
+    } 
 }

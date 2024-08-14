@@ -7,8 +7,8 @@ import java.util.Map;
 
 public class Tree {
     private NodoArbol root;
-    private Map<Short, NodoArbol> nodeMap;
-    private Map<Short, List<Short>> parentChildMap;
+    private Map<Short, NodoArbol> nodeMap;  // Mapa de nodos por ID
+    private Map<Short, List<NodoHijo>> parentChildMap;  // Relación padre-hijo
 
     public Tree() {
         this.nodeMap = new HashMap<>();
@@ -27,9 +27,11 @@ public class Tree {
     }
 
     private NodoArbol searchParent(short childId) {
-        for (Map.Entry<Short, List<Short>> entry : parentChildMap.entrySet()) {
-            if (entry.getValue().contains(childId)) {
-                return nodeMap.get(entry.getKey());
+        for (Map.Entry<Short, List<NodoHijo>> entry : parentChildMap.entrySet()) {
+            for (NodoHijo hijo : entry.getValue()) {
+                if (hijo.getNodoHijoId() == childId) {
+                    return nodeMap.get(entry.getKey());
+                }
             }
         }
         return null;
@@ -38,8 +40,8 @@ public class Tree {
     public void removeNode(short id) {
         NodoArbol parent = searchParent(id);
         if (parent != null) {
-            List<Short> children = parentChildMap.get(parent.getNodoArbolId());
-            children.remove(Short.valueOf(id));
+            List<NodoHijo> children = parentChildMap.get(parent.getNodoArbolId());
+            children.removeIf(hijo -> hijo.getNodoHijoId() == id);
             parentChildMap.put(parent.getNodoArbolId(), children);
         }
         nodeMap.remove(id);
@@ -49,9 +51,13 @@ public class Tree {
     public void addNewNode(NodoArbol node, short parentId) {
         nodeMap.put(node.getNodoArbolId(), node);
         parentChildMap.putIfAbsent(parentId, new ArrayList<>());
-        parentChildMap.get(parentId).add(node.getNodoArbolId());
+
+        // Cambiar `1` a `(short) 1` para asegurar que sea un `short`
+        NodoHijo relacion = new NodoHijo(parentId, node.getNodoArbolId(), 'T', (short) 1, node);
+        parentChildMap.get(parentId).add(relacion);
         parentChildMap.put(node.getNodoArbolId(), new ArrayList<>());
     }
+
 
     public void modifyNode(NodoArbol node) {
         if (nodeMap.containsKey(node.getNodoArbolId())) {

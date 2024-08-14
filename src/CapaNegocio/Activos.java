@@ -8,6 +8,15 @@ public class Activos {
     private String monitor;
     private String docEstado;
 
+    public Activos(short activoId, String nombre, String tipo, String estado, String monitor, String docEstado) {
+        this.activoId = activoId;
+        this.nombre = nombre;
+        this.tipo = tipo;
+        this.estado = estado;
+        this.monitor = monitor;
+        this.docEstado = docEstado;
+    }
+
     public short getActivoId() {
         return activoId;
     }
@@ -55,6 +64,6 @@ public class Activos {
     public void setDocEstado(String docEstado) {
         this.docEstado = docEstado;
     }
-
+    
     
 }

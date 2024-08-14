@@ -1,22 +1,24 @@
 package CapaInterfaz;
 
-import CapaNegocio.NodoArbol;
-import CapaNegocio.Tree;
-import javax.swing.JOptionPane;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
-
 
 public class GUITree extends javax.swing.JFrame {
 
-    private Tree arbol;
 
     /**
      * Creates new form GUITree
      */
     public GUITree() {
         initComponents();
-        arbol = new Tree();
+        
+        this.TreeView.addTreeSelectionListener(new TreeSelectionListener() {
+            @Override
+            public void valueChanged(TreeSelectionEvent e) {
+                DefaultMutableTreeNode  = (DefaultMutableTreeNode) TreeView.getLastSelectedPathComponent();
+            }
+        });
     }
 
     /**
@@ -105,81 +107,15 @@ public class GUITree extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BtnInsertarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnInsertarActionPerformed
-        // Obtener el nodo seleccionado en el JTree
-        DefaultMutableTreeNode nodoSeleccionado = (DefaultMutableTreeNode) TreeView.getLastSelectedPathComponent();
-        if (nodoSeleccionado == null) {
-            JOptionPane.showMessageDialog(this, "Seleccione un nodo para agregar un nuevo hijo.");
-            return;
-        }
-
-        // Pedir al usuario que ingrese el tipo de nodo
-        String tipoNodo = JOptionPane.showInputDialog(this, "Ingrese el tipo del nuevo nodo:");
-        if (tipoNodo != null && !tipoNodo.trim().isEmpty()) {
-            // Crear nuevo nodo en la clase Tree
-            short nuevoNodoId = (short) (arbol.getNodos().size() + 1); // Generar ID
-            NodoArbol nuevoNodo = new NodoArbol(nuevoNodoId, tipoNodo);
-            arbol.agregarNodo(nuevoNodo);
-
-            // Agregar el nodo como hijo del nodo seleccionado
-            NodoArbol nodoPadre = arbol.buscarNodo((short) nodoSeleccionado.getUserObject());
-            arbol.agregarEnlace(nodoPadre.getNodoArbolId(), nuevoNodoId, 'T', (short) nodoPadre.getHijos().size());
-
-            // Actualizar visualización en el JTree
-            DefaultMutableTreeNode nuevoNodoVisual = new DefaultMutableTreeNode(tipoNodo);
-            nodoSeleccionado.add(nuevoNodoVisual);
-            ((DefaultTreeModel) TreeView.getModel()).reload(nodoSeleccionado);
-        }
+        
     }//GEN-LAST:event_BtnInsertarActionPerformed
 
     private void BtnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnEliminarActionPerformed
-        // Obtener el nodo seleccionado en el JTree
-        DefaultMutableTreeNode nodoSeleccionado = (DefaultMutableTreeNode) TreeView.getLastSelectedPathComponent();
-        if (nodoSeleccionado == null) {
-            JOptionPane.showMessageDialog(this, "Seleccione un nodo para eliminar.");
-            return;
-        }
-
-        // Confirmar la eliminación
-        int confirm = JOptionPane.showConfirmDialog(this, "¿Está seguro de que desea eliminar este nodo y todos sus hijos?", "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
-        if (confirm == JOptionPane.YES_OPTION) {
-            // Eliminar nodo en la clase Tree
-            NodoArbol nodoAEliminar = arbol.buscarNodo((short) nodoSeleccionado.getUserObject());
-            if (nodoAEliminar != null) {
-                arbol.eliminarNodo(nodoAEliminar);
-
-                // Eliminar visualización en el JTree
-                DefaultMutableTreeNode nodoPadre = (DefaultMutableTreeNode) nodoSeleccionado.getParent();
-                if (nodoPadre != null) {
-                    nodoPadre.remove(nodoSeleccionado);
-                    ((DefaultTreeModel) TreeView.getModel()).reload(nodoPadre);
-                } else {
-                    ((DefaultTreeModel) TreeView.getModel()).setRoot(null);
-                }
-            }
-        }
+        
     }//GEN-LAST:event_BtnEliminarActionPerformed
 
     private void BtnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnModificarActionPerformed
-        // Obtener el nodo seleccionado en el JTree
-        DefaultMutableTreeNode nodoSeleccionado = (DefaultMutableTreeNode) TreeView.getLastSelectedPathComponent();
-        if (nodoSeleccionado == null) {
-            JOptionPane.showMessageDialog(this, "Seleccione un nodo para modificar.");
-            return;
-        }
-
-        // Pedir al usuario que ingrese el nuevo tipo de nodo
-        String nuevoTipo = JOptionPane.showInputDialog(this, "Ingrese el nuevo tipo del nodo:", nodoSeleccionado.getUserObject().toString());
-        if (nuevoTipo != null && !nuevoTipo.trim().isEmpty()) {
-            // Modificar el nodo en la clase Tree
-            NodoArbol nodoAModificar = arbol.buscarNodo((short) nodoSeleccionado.getUserObject());
-            if (nodoAModificar != null) {
-                nodoAModificar.setTipoNodo(nuevoTipo);
-
-                // Modificar visualización en el JTree
-                nodoSeleccionado.setUserObject(nuevoTipo);
-                ((DefaultTreeModel) TreeView.getModel()).reload(nodoSeleccionado);
-            }
-        }
+        
     }//GEN-LAST:event_BtnModificarActionPerformed
 
     /**

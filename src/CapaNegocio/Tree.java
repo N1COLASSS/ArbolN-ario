@@ -6,56 +6,64 @@ import java.util.List;
 import java.util.Map;
 
 public class Tree {
-    
-    private Map<Short, NodoArbol> nodos = new HashMap<>();
-    private Map<Short, List<NodoHijo>> enlaces = new HashMap<>();
+    private NodoArbol root;
+    private Map<Short, NodoArbol> nodeMap;
+    private Map<Short, List<Short>> parentChildMap;
 
-    // Método para obtener los nodos
-    public Map<Short, NodoArbol> getNodos() {
-        return nodos;
+    public Tree() {
+        this.nodeMap = new HashMap<>();
+        this.parentChildMap = new HashMap<>();
     }
 
-    // Método para agregar un nodo al árbol
-    public void agregarNodo(NodoArbol nodo) {
-        nodos.put(nodo.getNodoArbolId(), nodo);
+    public Tree(NodoArbol root) {
+        this();
+        this.root = root;
+        this.nodeMap.put(root.getNodoArbolId(), root);
+        this.parentChildMap.put(root.getNodoArbolId(), new ArrayList<>());
     }
 
-    // Método para agregar un enlace (relación padre-hijo)
-    public void agregarEnlace(short nodoPadreId, short nodoHijoId, char opcionTF, short posicionRango) {
-        NodoHijo enlace = new NodoHijo(nodoPadreId, nodoHijoId, opcionTF, posicionRango);
-        enlaces.computeIfAbsent(nodoPadreId, k -> new ArrayList<>()).add(enlace);
-        
-        // También agregar el nodo hijo a la lista de hijos del nodo padre
-        NodoArbol nodoPadre = nodos.get(nodoPadreId);
-        NodoArbol nodoHijo = nodos.get(nodoHijoId);
-        if (nodoPadre != null && nodoHijo != null) {
-            nodoPadre.agregarHijo(nodoHijo);
-        }
+    public NodoArbol searchNode(short id) {
+        return nodeMap.get(id);
     }
 
-    // Método para mostrar la estructura del árbol
-    public void mostrarArbol() {
-        for (Map.Entry<Short, NodoArbol> entry : nodos.entrySet()) {
-            NodoArbol nodo = entry.getValue();
-            System.out.println("Nodo ID: " + nodo.getNodoArbolId() + ", Tipo: " + nodo.getTipoNodo());
-            List<NodoHijo> hijos = enlaces.get(nodo.getNodoArbolId());
-            if (hijos != null) {
-                for (NodoHijo hijo : hijos) {
-                    System.out.println("  -> Hijo ID: " + hijo.getNodoHijoId() + ", OpciónTF: " + hijo.getOpcionTF());
-                }
+    private NodoArbol searchParent(short childId) {
+        for (Map.Entry<Short, List<Short>> entry : parentChildMap.entrySet()) {
+            if (entry.getValue().contains(childId)) {
+                return nodeMap.get(entry.getKey());
             }
         }
-    }
-    
-    public NodoArbol buscarNodo(short nodoId) {
-        return nodos.get(nodoId);
+        return null;
     }
 
-    public void eliminarNodo(NodoArbol nodo) {
-        nodos.remove(nodo.getNodoArbolId());
-        enlaces.remove(nodo.getNodoArbolId());
-        for (List<NodoHijo> hijos : enlaces.values()) {
-            hijos.removeIf(hijo -> hijo.getNodoHijoId() == nodo.getNodoArbolId());
+    public void removeNode(short id) {
+        NodoArbol parent = searchParent(id);
+        if (parent != null) {
+            List<Short> children = parentChildMap.get(parent.getNodoArbolId());
+            children.remove(Short.valueOf(id));
+            parentChildMap.put(parent.getNodoArbolId(), children);
         }
+        nodeMap.remove(id);
+        parentChildMap.remove(id);
+    }
+
+    public void addNewNode(NodoArbol node, short parentId) {
+        nodeMap.put(node.getNodoArbolId(), node);
+        parentChildMap.putIfAbsent(parentId, new ArrayList<>());
+        parentChildMap.get(parentId).add(node.getNodoArbolId());
+        parentChildMap.put(node.getNodoArbolId(), new ArrayList<>());
+    }
+
+    public void modifyNode(NodoArbol node) {
+        if (nodeMap.containsKey(node.getNodoArbolId())) {
+            nodeMap.put(node.getNodoArbolId(), node);
+        }
+    }
+
+    public NodoArbol getRoot() {
+        return root;
+    }
+
+    public void setRoot(NodoArbol root) {
+        this.root = root;
     }
 }

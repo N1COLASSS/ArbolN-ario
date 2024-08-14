@@ -1,24 +1,16 @@
 package CapaNegocio;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class NodoArbol {
     private short nodoArbolId;
     private String tipoNodo;
-    private List<NodoArbol> hijos;
+    private short tipoExpersion;
+    private short expresion;
 
-    // Constructor con inicialización de la lista de hijos
-    public NodoArbol(short nodoArbolId, String tipoNodo) {
+    public NodoArbol(short nodoArbolId, String tipoNodo, short tipoExpersion, short expresion) {
         this.nodoArbolId = nodoArbolId;
         this.tipoNodo = tipoNodo;
-        this.hijos = new ArrayList<>(); // Inicializa la lista de hijos
-    }
-
-    public NodoArbol(short nodoArbolId, String tipoNodo, List<NodoArbol> hijos) {
-        this.nodoArbolId = nodoArbolId;
-        this.tipoNodo = tipoNodo;
-        this.hijos = hijos != null ? hijos : new ArrayList<>(); // Inicializa si es null
+        this.tipoExpersion = tipoExpersion;
+        this.expresion = expresion;
     }
 
     public short getNodoArbolId() {
@@ -37,15 +29,21 @@ public class NodoArbol {
         this.tipoNodo = tipoNodo;
     }
 
-    public List<NodoArbol> getHijos() {
-        return hijos;
+    public short getTipoExpersion() {
+        return tipoExpersion;
     }
 
-    public void setHijos(List<NodoArbol> hijos) {
-        this.hijos = hijos;
+    public void setTipoExpersion(short tipoExpersion) {
+        this.tipoExpersion = tipoExpersion;
+    }
+
+    public short getExpresion() {
+        return expresion;
+    }
+
+    public void setExpresion(short expresion) {
+        this.expresion = expresion;
     }
     
-    public void agregarHijo(NodoArbol nodoHijo) {
-        hijos.add(nodoHijo);
-    }
+    
 }

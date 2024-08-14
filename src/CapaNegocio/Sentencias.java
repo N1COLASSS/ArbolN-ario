@@ -9,6 +9,14 @@ public class Sentencias {
     private String estado;
     private Date fechaAprobacion;
 
+    public Sentencias(short sentenciaId, String nombre, String query, String estado, Date fechaAprobacion) {
+        this.sentenciaId = sentenciaId;
+        this.nombre = nombre;
+        this.query = query;
+        this.estado = estado;
+        this.fechaAprobacion = fechaAprobacion;
+    }
+
     public short getSentenciaId() {
         return sentenciaId;
     }
@@ -48,6 +56,4 @@ public class Sentencias {
     public void setFechaAprobacion(Date fechaAprobacion) {
         this.fechaAprobacion = fechaAprobacion;
     }
-    
-    
 }

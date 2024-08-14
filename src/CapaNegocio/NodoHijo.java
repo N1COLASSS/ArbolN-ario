@@ -1,33 +1,34 @@
 package CapaNegocio;
 
 public class NodoHijo {
-    
-    private short nodoPadreId;
-    private short nodoHijoId;
+    private short nodoPadre;
+    private short nodoHijo;
     private char opcionTF;
     private short posicionRango;
+    private short nodoArbolId;
 
-    public NodoHijo(short nodoPadreId, short nodoHijoId, char opcionTF, short posicionRango) {
-        this.nodoPadreId = nodoPadreId;
-        this.nodoHijoId = nodoHijoId;
+    public NodoHijo(short nodoPadre, short nodoHijo, char opcionTF, short posicionRango, short nodoArbolId) {
+        this.nodoPadre = nodoPadre;
+        this.nodoHijo = nodoHijo;
         this.opcionTF = opcionTF;
         this.posicionRango = posicionRango;
+        this.nodoArbolId = nodoArbolId;
     }
 
-    public short getNodoPadreId() {
-        return nodoPadreId;
+    public short getNodoPadre() {
+        return nodoPadre;
     }
 
-    public void setNodoPadreId(short nodoPadreId) {
-        this.nodoPadreId = nodoPadreId;
+    public void setNodoPadre(short nodoPadre) {
+        this.nodoPadre = nodoPadre;
     }
 
-    public short getNodoHijoId() {
-        return nodoHijoId;
+    public short getNodoHijo() {
+        return nodoHijo;
     }
 
-    public void setNodoHijoId(short nodoHijoId) {
-        this.nodoHijoId = nodoHijoId;
+    public void setNodoHijo(short nodoHijo) {
+        this.nodoHijo = nodoHijo;
     }
 
     public char getOpcionTF() {
@@ -45,4 +46,14 @@ public class NodoHijo {
     public void setPosicionRango(short posicionRango) {
         this.posicionRango = posicionRango;
     }
+
+    public short getNodoArbolId() {
+        return nodoArbolId;
+    }
+
+    public void setNodoArbolId(short nodoArbolId) {
+        this.nodoArbolId = nodoArbolId;
+    }
+    
+    
 }
